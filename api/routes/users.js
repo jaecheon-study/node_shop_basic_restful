@@ -67,6 +67,44 @@ router.get('/detail/:userId', (req, res) => {
 });
 
 /**
+ * @route   PATCH /users/:userId
+ * @desc    Modify user info 
+ * @access  Public
+ */
+router.patch('/:userId', (req, res) => {
+
+    const id = req.params.userId;
+    const updateOps = {};
+
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+
+    userModel
+        .update({_id: id}, {$set: updateOps})
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Can not modify user info'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful modify user info',
+                    updateUserInfo: result,
+                    request: 'http://localhost:5000/users/detail/' + id
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+
+});
+
+/**
  * @route   POST /users/register
  * @desc    Register user
  * @access  Public
