@@ -13,5 +13,26 @@ router.get('/', (req, res) => {
     });
 });
 
+/**
+ * @route   POST /orders
+ * @desc    Test Post Router
+ * @access  Public
+ */
+router.post('/', (req, res) => {
+
+    /**
+     * 장바구니에 상품을 등록하려면 상품의 아이디 값이 필요하다. 
+     * */ 
+    const order = {
+        productId: req.body.productId,
+        quantity: req.body.quantity
+    };
+
+    res.status(200).json({
+        msg: 'Success get router test',
+        createOrder: order
+    });
+});
+
 // 모듈로 한번에 내보냄
 module.exports = router;

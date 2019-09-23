@@ -18,8 +18,15 @@ router.get('/', (req, res) => {
  * @access  Public
  */
 router.post('/', (req, res) => {
+
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    };
+
     res.status(200).json({
-        msg: 'Success post products test'
+        msg: 'Success post products test',
+        createProduct: product
     });
 });
 
