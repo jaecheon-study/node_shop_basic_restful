@@ -32,6 +32,39 @@ router.get('/all', (req, res) => {
 });
 
 /**
+ * @route   GET /products/detail/:productId
+ * @desc    Get products detail item
+ * @access  Public
+ */
+router.get('/detail/:productId', (req, res) => {
+    
+    // 보여줄 상세 정보의 아이디 (product의 id 값)
+    const id = req.params.productId; 
+
+    // productModel에서 찾음
+    productModel
+        .findById(id) // id 값으로 찾음
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Not Found product id'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful detail product item',
+                    productInfo: result
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+/**
  * @route   POST /products/register
  * @desc    register product item
  * @access  Public
