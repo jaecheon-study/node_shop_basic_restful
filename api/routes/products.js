@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 // 생성한 모듈 불러옴
 const productModel = require('../models/product');
+const checkAuth = require('../middleware/check-auth');
 
 /**
  * @route   GET /products/all
@@ -67,9 +68,9 @@ router.get('/detail/:productId', (req, res) => {
 /**
  * @route   POST /products/register
  * @desc    register product item
- * @access  Public
+ * @access  Private
  */
-router.post('/register', (req, res) => {
+router.post('/register', checkAuth, (req, res) => {
 
     // product model에서 생성한 collection
     const product = new productModel({
@@ -96,9 +97,9 @@ router.post('/register', (req, res) => {
 /**
  * @route   PATCH /products/:productId
  * @desc    Modify product item
- * @access  Public
+ * @access  Private
  */
-router.patch('/:productId', (req, res) => {
+router.patch('/:productId', checkAuth, (req, res) => {
     
     // 변경할 product id
     const id = req.params.productId;
@@ -138,9 +139,9 @@ router.patch('/:productId', (req, res) => {
 /**
  * @route   DELETE /products/:productId
  * @desc    Delete product item
- * @access  Public
+ * @access  Private
  */
-router.delete('/:productId', (req, res) => {
+router.delete('/:productId', checkAuth, (req, res) => {
     
     // 삭제할 productId
     const id = req.params.productId;

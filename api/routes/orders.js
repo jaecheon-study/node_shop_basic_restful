@@ -6,13 +6,15 @@ const mongoose = require('mongoose');
 const productModel = require('../models/product');
 // ordersModel 선언
 const orderModel = require('../models/order');
+// checkAuth 할당
+const checkAuth = require('../middleware/check-auth');
 
 /**
  * @route   GET /orders/all
  * @desc    Get order list data
- * @access  Public
+ * @access  Private
  */
-router.get('/all', (req, res) => {
+router.get('/all', checkAuth, (req, res) => {
     orderModel
         .find()
         .exec()
@@ -39,9 +41,9 @@ router.get('/all', (req, res) => {
 /**
  * @route   GET /orders/detail/:orderId
  * @desc    Get order detail item
- * @access  Public
+ * @access  Private
  */
-router.get('/detail/:orderId', (req, res) => {
+router.get('/detail/:orderId', checkAuth, (req, res) => {
 
     const id = req.params.orderId;
 
@@ -71,9 +73,9 @@ router.get('/detail/:orderId', (req, res) => {
 /**
  * @route   POST /orders/register
  * @desc    Post register order
- * @access  Public
+ * @access  Private
  */
-router.post('/register', (req, res) => {
+router.post('/register', checkAuth, (req, res) => {
 
     // product id 할당
     const productId = req.body.productId;
@@ -117,9 +119,9 @@ router.post('/register', (req, res) => {
 /**
  * @route   PATCH /orders/:orderId
  * @desc    Modify order item
- * @access  Public
+ * @access  Private
  */
-router.patch('/:orderId', (req, res) => {
+router.patch('/:orderId', checkAuth, (req, res) => {
 
     const id = req.params.orderId;
 
@@ -161,9 +163,9 @@ router.patch('/:orderId', (req, res) => {
 /**
  * @route   DELETE /orders/:orderId
  * @desc    Delete order item
- * @access  Public
+ * @access  Private
  */
-router.delete('/:orderId', (req, res) => {
+router.delete('/:orderId', checkAuth, (req, res) => {
 
     const id = req.params.orderId;
 

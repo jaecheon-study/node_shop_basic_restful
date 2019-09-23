@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 // 로그인시 토큰 발행을 위한 jsonwebtoken 할당
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/user');
+const checkAuth = require('../middleware/check-auth');
 
 /**
  * @route   GET /users/all
@@ -70,9 +71,9 @@ router.get('/detail/:userId', (req, res) => {
 /**
  * @route   PATCH /users/:userId
  * @desc    Modify user info 
- * @access  Public
+ * @access  Private
  */
-router.patch('/:userId', (req, res) => {
+router.patch('/:userId', checkAuth, (req, res) => {
 
     const id = req.params.userId;
     const updateOps = {};
@@ -225,9 +226,9 @@ router.post('/login', (req, res) => {
 /**
  * @route   DELETE /users/:userId
  * @desc    Remove user
- * @access  Public
+ * @access  Private
  */
-router.delete('/:userId', (req, res) => {
+router.delete('/:userId', checkAuth, (req, res) => {
     // 삭제할 유저 아이디
     const id = req.params.userId;
 
