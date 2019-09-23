@@ -107,4 +107,39 @@ router.post('/register', (req, res) => {
         });
 });
 
+/**
+ * @route   DELETE /users/:userId
+ * @desc    Remove user
+ * @access  Public
+ */
+router.delete('/:userId', (req, res) => {
+    // 삭제할 유저 아이디
+    const id = req.params.userId;
+
+    userModel
+        .remove({_id: id})
+        .exec()
+        .then(result => {
+            if (!result) {
+                res.status(404).json({
+                    msg: 'Not found user'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Success remove user',
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:5000/users/all'
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+
+});
+
 module.exports = router;
