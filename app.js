@@ -9,4 +9,12 @@ const PORT = 5000;
 // 서버 생성
 const server = http.createServer(app);
 
+// 생성한 라우터 할당
+const productRoute = require('./api/routes/products');
+const orderRoute = require('./api/routes/orders');
+
+// 라우터 url 경로 설정
+app.use('/products', productRoute);
+app.use('/orders', orderRoute);
+
 server.listen(PORT, ()=> console.log(`Server Start... on PORT: ${PORT}`));
