@@ -1,0 +1,22 @@
+{
+  "name": "node_shop_basic_restful",
+  "version": "1.0.0",
+  "description": "node_shop_basic_restful",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaecheon-study/node_shop_basic_restful.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaecheon-study/node_shop_basic_restful/issues"
+  },
+  "homepage": "https://github.com/jaecheon-study/node_shop_basic_restful#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
