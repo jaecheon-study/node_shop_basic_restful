@@ -13,4 +13,4 @@ const productSchema = mongoose.Schema({
  * 단수로 이름을 지어도 복수로 자동 변환 된다.  
  * ex) product -> products
  */
-module.exports = mongoose.model('Products', productSchema);
+module.exports = mongoose.model('products', productSchema);

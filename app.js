@@ -18,6 +18,7 @@ const server = http.createServer(app);
 // 생성한 라우터 할당
 const productRoute = require('./api/routes/products');
 const orderRoute = require('./api/routes/orders');
+const userRoute = require('./api/routes/users');
 
 const db = 'mongodb+srv://jaecheon:epffl0128!@cluster0-1fqcl.mongodb.net/node_shop?retryWrites=true&w=majority';
 
@@ -38,6 +39,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 // 라우터 url 경로 설정
 app.use('/products', productRoute);
 app.use('/orders', orderRoute);
+app.use('/users', userRoute);
 
 // morgan의 사용 'dev'말고 여러 종류가 있다.
 // 콘솔창을 보여줌.
