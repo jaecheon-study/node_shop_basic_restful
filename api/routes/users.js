@@ -3,7 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 // 해쉬 암호화를 위한 bcryptjs 할당
 const bcrypt = require('bcryptjs');
-
+// 로그인시 토큰 발행을 위한 jsonwebtoken 할당
+const jwt = require('jsonwebtoken');
 const userModel = require('../models/user');
 
 /**
@@ -165,6 +166,51 @@ router.post('/register', (req, res) => {
                                     error: err
                                 });
                             });
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+/**
+ * @route   POST /users/login
+ * @desc    Sign in user
+ * @access  Public
+ */
+router.post('/login', (req, res) => {
+     userModel
+        .find({email: req.body.email}) // 사용자 입력 이메일 값 확인
+        .exec()
+        .then(user => {
+            // 가입 된 유저가 없으면
+            if (!user) {
+                return res.status(404).json({
+                    msg: 'Not found user',
+                    request: 'http://localhost:5000/users/register'
+                });
+            } else {
+                // 암호화된 비밀번호를 비교하기 위한 compare
+                bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+                    if (err) {
+                        return res.status(401).json({
+                            msg: 'Not match password'
+                        });
+                    } else if (result) {
+                        // 토큰 생성. 생성은 sign으로 한다.
+                        const token = jwt.sign({
+                            email: user[0].email,
+                            userId: user[0]._id
+                        }, "secret", {expiresIn: '1h'}); //expiresIn 1h 1시간, 1m 1분, 1s 1초 (1000/1)이니 1초는 1000
+                        
+                        return res.status(200).json({
+                            msg: 'Successful Auth',
+                            token: "Bearer " + token // header에 붙일 때 Bearer를 붙여야 한다.
+                        });
                     }
                 });
             }
