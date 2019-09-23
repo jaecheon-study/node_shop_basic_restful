@@ -37,6 +37,38 @@ router.get('/all', (req, res) => {
 });
 
 /**
+ * @route   GET /orders/detail/:orderId
+ * @desc    Get order detail item
+ * @access  Public
+ */
+router.get('/detail/:orderId', (req, res) => {
+
+    const id = req.params.orderId;
+
+    orderModel
+        .findById(id)
+        .exec()
+        .then(result => {
+            // 장바구니가 없을 시
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Not found order item'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful order item',
+                    orderInfo: result
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+/**
  * @route   POST /orders/register
  * @desc    Post register order
  * @access  Public
@@ -82,6 +114,83 @@ router.post('/register', (req, res) => {
         });
 });
 
+/**
+ * @route   PATCH /orders/:orderId
+ * @desc    Modify order item
+ * @access  Public
+ */
+router.patch('/:orderId', (req, res) => {
+
+    const id = req.params.orderId;
+
+    const quantity = req.body.quantity;
+
+    // const updateOps = {};
+
+    // for (const ops of req.body) {
+    //     updateOps[ops.propName] = ops.value;
+    // }
+
+    // 단일 속성 변경
+    orderModel 
+        .updateOne({_id: id}, {$set: {quantity: quantity}})
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Can not modify order item'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful modify order item',
+                    orderInfo: result,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:5000/orders/detail/' + id
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+/**
+ * @route   DELETE /orders/:orderId
+ * @desc    Delete order item
+ * @access  Public
+ */
+router.delete('/:orderId', (req, res) => {
+
+    const id = req.params.orderId;
+
+    orderModel
+        .remove({_id: id})
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Not found order id'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful remove order id',
+                    request: {
+                        type: 'GET',
+                        url: "http://localhost:5000/orders/all"
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+});
 
 // 모듈로 한번에 내보냄
 module.exports = router;
