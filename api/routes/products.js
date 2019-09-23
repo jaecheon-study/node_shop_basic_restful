@@ -3,7 +3,7 @@ const router = express.Router();
 
 const mongoose = require('mongoose');
 // 생성한 모듈 불러옴
-const productModel = require('../model/product');
+const productModel = require('../models/product');
 
 /**
  * @route   GET /products/all
