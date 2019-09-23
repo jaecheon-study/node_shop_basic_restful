@@ -73,6 +73,7 @@ router.post('/register', (req, res) => {
 
     // product model에서 생성한 collection
     const product = new productModel({
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price
     });
