@@ -104,14 +104,35 @@ router.patch('/', (req, res) => {
 });
 
 /**
- * @route   DELETE /products
- * @desc    Test Delete Router
+ * @route   DELETE /products/:productId
+ * @desc    Delete product item
  * @access  Public
  */
-router.delete('/', (req, res) => {
-    res.status(200).json({
-        msg: 'Success delete products test'
-    });
+router.delete('/:productId', (req, res) => {
+    
+    // 삭제할 productId
+    const id = req.params.productId;
+
+    // product model에서 가져옴
+    productModel
+        .remove({_id: id})
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Not Found product id'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful remove product item'
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 
