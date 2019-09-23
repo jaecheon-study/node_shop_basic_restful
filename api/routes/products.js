@@ -1,33 +1,62 @@
 const express = require('express');
 const router = express.Router();
 
+const mongoose = require('mongoose');
+// 생성한 모듈 불러옴
+const productModel = require('../model/product');
+
 /**
- * @route   GET /products
- * @desc    Test Get Router
+ * @route   GET /products/all
+ * @desc    Get products all data
  * @access  Public
  */
-router.get('/', (req, res) => {
-    res.status(200).json({
-        msg: 'Success get products test'
-    });
+router.get('/all', (req, res) => {
+
+    // productModel에서 찾음
+    productModel
+        .find() // 전체 찾음
+        .exec() // 쿼리 진행
+        .then(results => {
+            res.status(200).json({
+                msg: 'Successful products all data',
+                count: results.length,
+                productList: results
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+
 });
 
 /**
- * @route   POST /products
- * @desc    Test Post Router
+ * @route   POST /products/register
+ * @desc    register product item
  * @access  Public
  */
-router.post('/', (req, res) => {
+router.post('/register', (req, res) => {
 
-    const product = {
+    // product model에서 생성한 collection
+    const product = new productModel({
         name: req.body.name,
         price: req.body.price
-    };
-
-    res.status(200).json({
-        msg: 'Success post products test',
-        createProduct: product
     });
+
+    product
+        .save() // 저장
+        .then(result => {
+            res.status(200).json({
+                msg: 'Successful register product data',
+                createProduct: result
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 /**
