@@ -6,6 +6,8 @@ const app = express();
 const morgan = require('morgan');
 // request data의 body로부터 파라미터를 편리하게 추출하는 모듈
 const bodyParser = require('body-parser');
+// mongoose 할당
+const mongoose = require('mongoose');
 // 기본 서버를 작성하기위한 http
 const http = require('http');
 // port 설정
@@ -16,6 +18,13 @@ const server = http.createServer(app);
 // 생성한 라우터 할당
 const productRoute = require('./api/routes/products');
 const orderRoute = require('./api/routes/orders');
+
+const db = 'mongodb+srv://jaecheon:epffl0128!@cluster0-1fqcl.mongodb.net/node_shop?retryWrites=true&w=majority';
+
+// mongodb 연결
+mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true})
+    .then(() => console.log('MongoDB Connect...'))
+    .catch(err => console.log(err));
 
 // body-parser 설정
 app.use(bodyParser.json()); // json 형태
