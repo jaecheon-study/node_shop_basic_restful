@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 // product Schema 생성
 const productSchema = mongoose.Schema({
     // collection 리스트 (key, type)
+    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     price: Number
 });

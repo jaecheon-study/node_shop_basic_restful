@@ -22,7 +22,7 @@ const orderRoute = require('./api/routes/orders');
 const db = 'mongodb+srv://jaecheon:epffl0128!@cluster0-1fqcl.mongodb.net/node_shop?retryWrites=true&w=majority';
 
 // mongodb 연결
-mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true})
+mongoose.connect(db, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true})
     .then(() => console.log('MongoDB Connect...'))
     .catch(err => console.log(err));
 

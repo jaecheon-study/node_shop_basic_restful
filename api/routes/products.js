@@ -93,14 +93,45 @@ router.post('/register', (req, res) => {
 });
 
 /**
- * @route   PATCH /products
- * @desc    Test Patch Router
+ * @route   PATCH /products/:productId
+ * @desc    Modify product item
  * @access  Public
  */
-router.patch('/', (req, res) => {
-    res.status(200).json({
-        msg: 'Success patch products test'
-    });
+router.patch('/:productId', (req, res) => {
+    
+    // 변경할 product id
+    const id = req.params.productId;
+    // product의 어떤 속성 값을 변경할지 모르니 빈 객체하나 생성
+    const updateOps = {};
+    // 입력 된 req.body의 내용 할당
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    // product model에서 찾음
+    productModel
+        .update({_id: id}, {$set: updateOps})
+        .exec()
+        .then(result => {
+            if (!result) {
+                return res.status(404).json({
+                    msg: 'Not modify product item'
+                });
+            } else {
+                res.status(200).json({
+                    msg: 'Successful modify product item',
+                    productInfo: result,
+                    request: {
+                        type: "GET",
+                        url: "http://localhost:5000/products/detail/" + id
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 /**
